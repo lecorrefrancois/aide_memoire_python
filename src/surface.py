@@ -80,3 +80,34 @@ def make_grid(
     X, Y = np.meshgrid(x, y)
     Z = surface(X, Y)
     return X, Y, Z
+
+
+def query_surface() -> tuple[float, float, float]:
+    """Demande à l'utilisateur des coordonnées (x, y) et retourne z.
+
+    Valide que les valeurs saisies sont bien des nombres et qu'elles
+    se trouvent dans le domaine de recherche.
+
+    Returns:
+        Tuple (x, y, z) avec z = surface(x, y).
+    """
+    while True:
+        try:
+            x = float(input(f"Entrez la valeur de x [{X_BOUNDS[0]}, {X_BOUNDS[1]}] : "))
+            y = float(input(f"Entrez la valeur de y [{Y_BOUNDS[0]}, {Y_BOUNDS[1]}] : "))
+        except ValueError:
+            print("Erreur : veuillez entrer des valeurs numériques.")
+            continue
+
+        if not (X_BOUNDS[0] <= x <= X_BOUNDS[1]):
+            print(f"Attention : x={x} est hors du domaine {X_BOUNDS}.")
+        if not (Y_BOUNDS[0] <= y <= Y_BOUNDS[1]):
+            print(f"Attention : y={y} est hors du domaine {Y_BOUNDS}.")
+
+        z = float(surface(x, y))
+        print(f"f({x}, {y}) = {z:.4f}")
+        return x, y, z
+
+
+if __name__ == "__main__":
+    query_surface()
